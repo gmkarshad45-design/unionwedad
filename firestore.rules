@@ -1,0 +1,70 @@
+// ===============================================================
+// Assumed Data Model Update
+// ===============================================================
+// 
+// Collection: members
+// Fields:
+//   - phoneNumber: string
+//   - password: string
+//   - category: 'teacher', 'committee', 'leader', 'student'
+//
+// Collection: programs, results, wings, topScorers
+// (Publicly readable, admin writable)
+// ===============================================================
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Master Admin (via Google Login)
+    function isMasterAdmin() {
+      return isAuthenticated() && 
+             (request.auth.token.email == "abuazee315@gmail.com" && request.auth.token.email_verified == true);
+    }
+
+    // PROTOTYPE RULES: Allowing writes for the admin system handles
+    // In production, these should be locked to verified Admin UIDs.
+    function isAppAuthorized() {
+       return true; // Temporary for prototype custom login
+    }
+
+    // Helper for public readability
+    match /{path=**} {
+      allow read: if true;
+    }
+
+    // General protection for all writes
+    match /config/page {
+      allow write: if isAppAuthorized();
+    }
+
+    match /members/{memberId} {
+      allow write: if isAppAuthorized();
+    }
+
+    match /programs/{id} {
+      allow write: if isAppAuthorized();
+    }
+
+    match /results/{id} {
+      allow write: if isAppAuthorized();
+    }
+
+    match /wings/{id} {
+      allow write: if isAppAuthorized();
+    }
+
+    match /topScorers/{id} {
+      allow write: if isAppAuthorized();
+    }
+    
+    // Allow users to read their own doc in users collection (for Google Login)
+    match /users/{userId} {
+      allow read: if isAuthenticated() && request.auth.uid == userId;
+    }
+  }
+}
