@@ -1,0 +1,83 @@
+{
+  "entities": {
+    "PageConfig": {
+      "title": "Page Configuration",
+      "description": "Global settings for the website homepage",
+      "type": "object",
+      "properties": {
+        "heroTitle": { "type": "string" },
+        "heroSubtitle": { "type": "string" },
+        "aboutTitle": { "type": "string" },
+        "aboutMission": { "type": "string" },
+        "aboutVision": { "type": "string" },
+        "aboutAchievements": { "type": "string" }
+      }
+    },
+    "AcademyMember": {
+      "title": "Academy Member",
+      "description": "A person associated with the batch",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "photoUrl": { "type": "string" },
+        "category": { 
+          "type": "string", 
+          "enum": ["teacher", "committee", "leader", "student"]
+        },
+        "description": { "type": "string" },
+        "order": { "type": "number" },
+        "admissionNumber": { "type": "string" },
+        "phoneNumber": { "type": "string" },
+        "password": { "type": "string" }
+      }
+    },
+    "Program": {
+      "title": "Program",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "date": { "type": "string" },
+        "description": { "type": "string" },
+        "resultUrl": { "type": "string" }
+      }
+    },
+    "StudentResult": {
+      "title": "Student Result",
+      "type": "object",
+      "properties": {
+        "admissionNumber": { "type": "string" },
+        "studentName": { "type": "string" },
+        "totalScore": { "type": "number" },
+        "month": { "type": "string" },
+        "details": { "type": "string" }
+      }
+    },
+    "Wing": {
+      "title": "Wing",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "score": { "type": "number" },
+        "color": { "type": "string" }
+      }
+    },
+    "TopScorer": {
+      "title": "Monthly Top Scorer",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "score": { "type": "number" },
+        "month": { "type": "string" },
+        "photoUrl": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/config/page": { "schema": "PageConfig", "description": "Global settings" },
+    "/members/{memberId}": { "schema": "AcademyMember", "description": "Batch members" },
+    "/programs/{programId}": { "schema": "Program", "description": "Academy programs" },
+    "/results/{resultId}": { "schema": "StudentResult", "description": "Individual results" },
+    "/wings/{wingId}": { "schema": "Wing", "description": "Batch wings scores" },
+    "/topScorers/{id}": { "schema": "TopScorer", "description": "Monthly top scorers" }
+  }
+}
